@@ -3,7 +3,7 @@ package com.shurikat.cooperationgame.core;
 /**
  * @author Alex Ivchenko
  */
-abstract class AppliedAgent {
+public abstract class AppliedAgent {
     private final Agent owner;
     private int money;
 
