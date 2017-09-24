@@ -13,4 +13,12 @@
 
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.shurikat.cooperationgame</groupId>
+            <artifactId>game-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>
