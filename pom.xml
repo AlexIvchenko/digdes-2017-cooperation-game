@@ -8,6 +8,7 @@
     <modules>
         <module>game-bots</module>
         <module>game-core</module>
+        <module>project</module>
     </modules>
     <name>cooperation-game</name>
     <url>http://maven.apache.org</url>

@@ -1,5 +1,6 @@
 package com.shurikat.cooperationgame.core;
 
+import com.shurikat.cooperationgame.summary.AgentSnapshot;
 import com.shurikat.cooperationgame.summary.PartResult;
 
 /**
@@ -15,6 +16,8 @@ final class Part {
     }
 
     PartResult execute() {
+        int fMoneyBefore = firstAgent.money();
+        int sMoneyBefore = secondAgent.money();
         Bet fBet = firstAgent.bet();
         Bet sBet = secondAgent.bet();
         Reward fReward = null;
@@ -37,9 +40,26 @@ final class Part {
         firstAgent.reward(fReward);
         secondAgent.reward(sReward);
 
+        int fMoneyAfter = firstAgent.money();
+        int sMoneyAfter = secondAgent.money();
+
+        AgentSnapshot fSnapshot = AgentSnapshot.builder()
+                .agent(firstAgent.agent())
+                .moneyBefore(fMoneyBefore)
+                .bet(fBet)
+                .reward(fReward)
+                .moneyAfter(fMoneyAfter);
+
+        AgentSnapshot sSnapshot = AgentSnapshot.builder()
+                .agent(secondAgent.agent())
+                .moneyBefore(sMoneyBefore)
+                .bet(sBet)
+                .reward(sReward)
+                .moneyAfter(sMoneyAfter);
+
         return PartResult.builder()
-                .first(firstAgent.agent(), fBet, fReward)
-                .second(secondAgent.agent(), sBet, sReward)
+                .first(fSnapshot)
+                .second(sSnapshot)
                 .build();
     }
 }

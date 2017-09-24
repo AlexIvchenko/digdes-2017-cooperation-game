@@ -7,4 +7,5 @@ import com.shurikat.cooperationgame.core.Bet;
  */
 public interface BetStrategy {
     Bet bet();
+    String name();
 }

@@ -2,6 +2,7 @@ package com.shurikat.cooperationgame.core;
 
 import com.shurikat.cooperationgame.summary.GameSummary;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,12 +18,16 @@ public final class Game {
                 .collect(Collectors.toList());
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public GameSummary execute(int maxRound) {
         GameSummary.Builder summaryBuilder = GameSummary.builder();
         for (int r = 0; r < maxRound && !isFinished(); ++r) {
             makeRound().execute().results().forEach(partResult -> {
-                summaryBuilder.result(partResult.firstAgent(), partResult);
-                summaryBuilder.result(partResult.secondAgent(), partResult);
+                summaryBuilder.result(partResult.firstAgentSnapshot().agent, partResult);
+                summaryBuilder.result(partResult.secondAgentSnapshot().agent, partResult);
             });
         }
         return summaryBuilder.build();
@@ -40,5 +45,18 @@ public final class Game {
         return agents.stream()
                 .filter(AppliedAgent::hasMoney)
                 .count() == 1;
+    }
+
+    public static class Builder {
+        private final List<Agent> agents = new ArrayList<>();
+
+        public Builder agent(Agent agent) {
+            agents.add(agent);
+            return this;
+        }
+
+        public Game build() {
+            return new Game(agents);
+        }
     }
 }

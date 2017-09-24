@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * @author Alex Ivchenko
  */
-public class ProbabilityBetStrategy implements BetStrategy {
+public final class ProbabilityBetStrategy implements BetStrategy {
     private final Random random = new Random(System.currentTimeMillis());
     private final int probability;
 
@@ -31,5 +31,10 @@ public class ProbabilityBetStrategy implements BetStrategy {
         } else {
             return Bet.ZERO;
         }
+    }
+
+    @Override
+    public String name() {
+        return "probability";
     }
 }

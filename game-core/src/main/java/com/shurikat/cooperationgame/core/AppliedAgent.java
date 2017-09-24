@@ -22,6 +22,10 @@ public abstract class AppliedAgent {
         return money > 0;
     }
 
+    public final int money() {
+        return money;
+    }
+
     public final void reward(Reward reward) {
         money = reward.affect(money);
     }
