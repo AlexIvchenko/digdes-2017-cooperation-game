@@ -32,7 +32,7 @@ public final class Game {
     private Round makeRound() {
         Round.Builder roundBuilder = Round.builder();
         agents.stream()
-                .filter(Agent::hasMoney)
+                .filter(Agent::canPlay)
                 .forEach(roundBuilder::addAgent);
         return roundBuilder.build();
     }
@@ -44,7 +44,7 @@ public final class Game {
 
     private boolean isFinished() {
         return agents.stream()
-                .filter(Agent::hasMoney)
+                .filter(Agent::canPlay)
                 .count() <= 1;
     }
 
@@ -66,7 +66,7 @@ public final class Game {
 
         private void checkAgent(Agent agent) {
             Objects.requireNonNull(agent, "agent must be not null");
-            if (!agent.hasMoney()) {
+            if (!agent.canPlay()) {
                 throw new IllegalArgumentException("agent" + agent + "don't have money");
             }
         }

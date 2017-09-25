@@ -26,8 +26,8 @@ public final class Agent {
         return name;
     }
 
-    public boolean hasMoney() {
-        return money > 0;
+    public boolean canPlay() {
+        return money >= 0;
     }
 
     public int money() {

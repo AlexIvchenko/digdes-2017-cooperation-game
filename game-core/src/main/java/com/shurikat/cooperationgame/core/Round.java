@@ -44,7 +44,7 @@ final class Round {
         private final Set<Agent> agents = new HashSet<>();
 
         public Builder addAgent(Agent agent) {
-            if (!agent.hasMoney()) {
+            if (!agent.canPlay()) {
                 throw new IllegalArgumentException("agent must have money");
             }
             agents.add(agent);

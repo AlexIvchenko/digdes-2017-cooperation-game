@@ -31,7 +31,7 @@ public final class GameSummary {
         GameResult.Builder resultBuilder = GameResult.builder();
         agentSummary
                 .stream()
-                .filter(res -> res.agent().hasMoney())
+                .filter(res -> res.agent().canPlay())
                 .forEach(agentResults -> resultBuilder.remaining(agentResults.agent()));
         result = resultBuilder.build();
         this.agentSummary = new HashMap<>();

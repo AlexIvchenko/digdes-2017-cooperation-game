@@ -37,14 +37,14 @@ public class GameTest {
 
     @Test
     public void givenTwoZeroAgentsWith1Coin_whenProceed_thenGameIsFinishedBy1RoundAndNobodyIsWinner() throws Exception {
-        Agent z1 = agent("z1", 1, Bet.ZERO);
-        Agent z2 = agent("z2", 1, Bet.ZERO);
+        Agent z1 = agent("z1", 0, Bet.ZERO);
+        Agent z2 = agent("z2", 0, Bet.ZERO);
         GameResult result = Game.builder().addAgent(z1).addAgent(z2).build().proceed(1).result();
         assertTrue(result.isFinished());
         assertFalse(result.winner().isPresent());
         assertEquals(0, result.remaining().count());
-        assertEquals(0, z1.money());
-        assertEquals(0, z2.money());
+        assertEquals(-1, z1.money());
+        assertEquals(-1, z2.money());
     }
 
     @Test
