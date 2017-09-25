@@ -25,9 +25,13 @@ public final class BotAgent extends Agent {
         return strategy.bet();
     }
 
+    public final BetStrategy strategy() {
+        return strategy;
+    }
+
     @Override
     public final String toString() {
-        return String.format("Bot(name = %s, strategy = %s)", name(), strategy.name());
+        return String.format("Bot(name = %s, strategy = %s, money = %s)", name(), strategy.name(), money());
     }
 
     private static class BuilderImpl implements BetStrategyStageBuilder, NameStageBuilder, MoneyStageBuilder {

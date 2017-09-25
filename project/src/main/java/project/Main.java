@@ -1,21 +1,15 @@
 package project;
 
-import com.shurikat.cooperationgame.core.Game;
-import com.shurikat.cooperationgame.summary.GameSummary;
-
-import static com.shurikat.cooperationgame.bots.Bots.naive;
-import static com.shurikat.cooperationgame.bots.Bots.pessimistic;
-
 /**
  * @author Alex Ivchenko
  */
 public class Main {
     public static void main(final String... args) {
-        Game game = Game.builder()
-                .addAgent(pessimistic().name("first").money(10))
-                .addAgent(naive().name("naive").money(10))
+        Tournament.Settings settings = new Tournament.Settings(100, 10, 10);
+        Statistic statistic = Statistic.builder()
+                .experiments(1000)
+                .settings(settings)
                 .build();
-        GameSummary result = game.proceed(100);
-        System.out.println(result.result().winner());
+        statistic.get().forEach(System.out::println);
     }
 }
