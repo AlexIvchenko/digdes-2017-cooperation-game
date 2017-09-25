@@ -7,15 +7,19 @@ import com.shurikat.cooperationgame.summary.PartResult;
  * @author Alex Ivchenko
  */
 final class Part {
-    private final AppliedAgent firstAgent;
-    private final AppliedAgent secondAgent;
+    private final Agent firstAgent;
+    private final Agent secondAgent;
+    private boolean executed = false;
 
-    Part(AppliedAgent firstAgent, AppliedAgent secondAgent) {
+    Part(Agent firstAgent, Agent secondAgent) {
         this.firstAgent = firstAgent;
         this.secondAgent = secondAgent;
     }
 
     PartResult execute() {
+        if (executed) {
+            throw new IllegalStateException("this part already executed");
+        }
         int fMoneyBefore = firstAgent.money();
         int sMoneyBefore = secondAgent.money();
         Bet fBet = firstAgent.bet();
@@ -44,22 +48,28 @@ final class Part {
         int sMoneyAfter = secondAgent.money();
 
         AgentSnapshot fSnapshot = AgentSnapshot.builder()
-                .agent(firstAgent.agent())
+                .agent(firstAgent)
                 .moneyBefore(fMoneyBefore)
                 .bet(fBet)
                 .reward(fReward)
                 .moneyAfter(fMoneyAfter);
 
         AgentSnapshot sSnapshot = AgentSnapshot.builder()
-                .agent(secondAgent.agent())
+                .agent(secondAgent)
                 .moneyBefore(sMoneyBefore)
                 .bet(sBet)
                 .reward(sReward)
                 .moneyAfter(sMoneyAfter);
 
+        executed = true;
+
         return PartResult.builder()
                 .first(fSnapshot)
                 .second(sSnapshot)
                 .build();
+    }
+
+    boolean isExecuted() {
+        return executed;
     }
 }

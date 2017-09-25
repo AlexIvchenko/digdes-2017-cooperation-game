@@ -4,38 +4,53 @@ import com.shurikat.cooperationgame.summary.PartResult;
 import com.shurikat.cooperationgame.summary.RoundSummary;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Alex Ivchenko
  */
 final class Round {
-    private final ArrayList<AppliedAgent> agents;
+    private final ArrayList<Agent> agents;
+    private boolean executed = false;
 
     static Builder builder() {
         return new Builder();
     }
 
-    private Round(List<AppliedAgent> agents) {
+    private Round(Set<Agent> agents) {
         this.agents = new ArrayList<>(agents);
     }
 
     RoundSummary execute() {
+        if (executed) {
+            throw new IllegalStateException("this round already executed");
+        }
         RoundSummary.Builder summaryBuilder = RoundSummary.builder();
         for (int i = 0; i < agents.size(); ++i) {
             for (int j = i + 1; j < agents.size(); ++j) {
-                Part part = new Part(agents.get(i), agents.get(j));
-                PartResult partResult = part.execute();
-                summaryBuilder.result(partResult);
+                summaryBuilder.result(makePair(i, j));
             }
         }
+        executed = true;
         return summaryBuilder.build();
     }
 
-    static class Builder {
-        private final ArrayList<AppliedAgent> agents = new ArrayList<>();
+    boolean isExecuted() {
+        return executed;
+    }
 
-        public Builder addAgent(AppliedAgent agent) {
+    private PartResult makePair(int i, int j) {
+        return new Part(agents.get(i), agents.get(j)).execute();
+    }
+
+    static class Builder {
+        private final Set<Agent> agents = new HashSet<>();
+
+        public Builder addAgent(Agent agent) {
+            if (!agent.hasMoney()) {
+                throw new IllegalArgumentException("agent must have money");
+            }
             agents.add(agent);
             return this;
         }

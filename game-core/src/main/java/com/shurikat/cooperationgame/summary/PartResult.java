@@ -29,7 +29,8 @@ public final class PartResult {
     public static class Builder {
         private AgentSnapshot firstSnapshot;
         private AgentSnapshot secondSnapshot;
-       public Builder first(AgentSnapshot snapshot) {
+
+        public Builder first(AgentSnapshot snapshot) {
             this.firstSnapshot = snapshot;
             return this;
         }

@@ -2,6 +2,7 @@ package com.shurikat.cooperationgame.summary;
 
 import com.shurikat.cooperationgame.core.Agent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
  * @author Alex Ivchenko
  */
 public final class GameSummary {
-    private final Map<Agent, PartResults> agentSummary;
+    private final Map<Agent, AgentResults> agentSummary;
     private final GameResult result;
 
     public static Builder builder() {
@@ -22,35 +23,38 @@ public final class GameSummary {
         return result;
     }
 
-    public PartResults agentResults(Agent agent) {
+    public AgentResults agentResults(Agent agent) {
         return agentSummary.get(agent);
     }
 
-    private GameSummary(List<PartResults> agentSummary) {
+    private GameSummary(List<AgentResults> agentSummary) {
         GameResult.Builder resultBuilder = GameResult.builder();
         agentSummary
                 .stream()
-                .filter(PartResults::hasMoney)
-                .forEach(partResults -> resultBuilder.remaining(partResults.agent()));
+                .filter(res -> res.agent().hasMoney())
+                .forEach(agentResults -> resultBuilder.remaining(agentResults.agent()));
         result = resultBuilder.build();
         this.agentSummary = new HashMap<>();
-        agentSummary.forEach(partResults -> this.agentSummary.put(partResults.agent(), partResults));
+        agentSummary.forEach(agentResults -> this.agentSummary.put(agentResults.agent(), agentResults));
     }
 
     public static class Builder {
-        private final Map<Agent, PartResults.Builder> agentSummary = new HashMap<>();
+        private final Map<Agent, List<PartResult>> agentSummary = new HashMap<>();
 
         public Builder result(Agent agent, PartResult result) {
-            agentSummary.putIfAbsent(agent, PartResults.builder());
-            agentSummary.get(agent).agent(agent).add(result);
+            agentSummary.putIfAbsent(agent, new ArrayList<>());
+            agentSummary.get(agent).add(result);
             return this;
         }
 
         public GameSummary build() {
-            List<PartResults> list = agentSummary.entrySet().stream()
-                    .map(entry -> entry.getValue().build())
-                    .collect(Collectors.toList());
-            return new GameSummary(list);
+            List<AgentResults> results = agentSummary.entrySet().stream()
+                    .map(entry -> {
+                        Agent agent = entry.getKey();
+                        List<PartResult> list = entry.getValue();
+                        return AgentResults.builder().agent(agent).addAll(list).build();
+                    }).collect(Collectors.toList());
+            return new GameSummary(results);
         }
     }
 }

@@ -1,48 +1,40 @@
 package com.shurikat.cooperationgame.botapi;
 
 import com.shurikat.cooperationgame.core.Agent;
-import com.shurikat.cooperationgame.core.AppliedAgent;
-import com.shurikat.cooperationgame.core.Game;
+import com.shurikat.cooperationgame.core.Bet;
 
 import java.util.Objects;
 
 /**
  * @author Alex Ivchenko
  */
-public final class BotAgent implements Agent {
-    private final String name;
+public final class BotAgent extends Agent {
     private final BetStrategy strategy;
-    private final int startMoney;
 
     public static BetStrategyStageBuilder builder() {
         return new BuilderImpl();
     }
 
-    private BotAgent(String name, BetStrategy strategy, int startMoney) {
-        this.name = name;
+    private BotAgent(String name, BetStrategy strategy, int money) {
+        super(name, money);
         this.strategy = strategy;
-        this.startMoney = startMoney;
     }
 
     @Override
-    public String name() {
-        return name;
+    public Bet bet() {
+        return strategy.bet();
     }
 
     @Override
-    public AppliedAgent applyGame(Game game) {
-        return new AppliedBotAgent(this, startMoney, strategy);
-    }
-
-    @Override
-    public String toString() {
-        return "I am bot, my name is " + name + ", I use " + strategy.name() + " strategy";
+    public final String toString() {
+        return String.format("Bot(name = %s, strategy = %s)", name(), strategy.name());
     }
 
     private static class BuilderImpl implements BetStrategyStageBuilder, NameStageBuilder, MoneyStageBuilder {
         private String name;
         private BetStrategy strategy;
-        private int startMoney;
+        private int money;
+
         @Override
         public NameStageBuilder strategy(BetStrategy strategy) {
             Objects.requireNonNull(strategy, "strategy must be not null");
@@ -58,9 +50,9 @@ public final class BotAgent implements Agent {
         }
 
         @Override
-        public BotAgent startMoney(int startMoney) {
-            this.startMoney = startMoney;
-            return new BotAgent(name, strategy, startMoney);
+        public BotAgent money(int money) {
+            this.money = money;
+            return new BotAgent(name, strategy, this.money);
         }
     }
 
@@ -73,6 +65,6 @@ public final class BotAgent implements Agent {
     }
 
     public interface MoneyStageBuilder {
-        BotAgent startMoney(int startMoney);
+        BotAgent money(int startMoney);
     }
 }

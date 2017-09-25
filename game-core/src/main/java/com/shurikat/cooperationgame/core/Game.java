@@ -1,21 +1,20 @@
 package com.shurikat.cooperationgame.core;
 
 import com.shurikat.cooperationgame.summary.GameSummary;
+import com.shurikat.cooperationgame.summary.PartResult;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Alex Ivchenko
  */
 public final class Game {
-    private final List<AppliedAgent> agents;
+    private final Set<Agent> agents;
+    private final GameSummary.Builder summaryBuilder = GameSummary.builder();
 
-    public Game(List<Agent> agents) {
-        this.agents = agents.stream()
-                .map(agent -> agent.applyGame(this))
-                .collect(Collectors.toList());
+    private Game(Set<Agent> agents) {
+        this.agents = new HashSet<>(agents);
     }
 
     public static Builder builder() {
@@ -23,12 +22,8 @@ public final class Game {
     }
 
     public GameSummary execute(int maxRound) {
-        GameSummary.Builder summaryBuilder = GameSummary.builder();
         for (int r = 0; r < maxRound && !isFinished(); ++r) {
-            makeRound().execute().results().forEach(partResult -> {
-                summaryBuilder.result(partResult.firstAgentSnapshot().agent, partResult);
-                summaryBuilder.result(partResult.secondAgentSnapshot().agent, partResult);
-            });
+            makeRound().execute().results().forEach(this::applyPartResult);
         }
         return summaryBuilder.build();
     }
@@ -36,22 +31,32 @@ public final class Game {
     private Round makeRound() {
         Round.Builder roundBuilder = Round.builder();
         agents.stream()
-                .filter(AppliedAgent::hasMoney)
+                .filter(Agent::hasMoney)
                 .forEach(roundBuilder::addAgent);
         return roundBuilder.build();
     }
 
+    private void applyPartResult(PartResult result) {
+        summaryBuilder.result(result.firstAgentSnapshot().agent, result);
+        summaryBuilder.result(result.secondAgentSnapshot().agent, result);
+    }
+
     private boolean isFinished() {
         return agents.stream()
-                .filter(AppliedAgent::hasMoney)
-                .count() == 1;
+                .filter(Agent::hasMoney)
+                .count() <= 1;
     }
 
     public static class Builder {
-        private final List<Agent> agents = new ArrayList<>();
+        private final Set<Agent> agents = new HashSet<>();
 
-        public Builder agent(Agent agent) {
+        public Builder addAgent(Agent agent) {
             agents.add(agent);
+            return this;
+        }
+
+        public Builder addAllAgents(Set<Agent> agents) {
+            agents.addAll(agents);
             return this;
         }
 
