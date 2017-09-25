@@ -1,3 +1,11 @@
+.idea/
+*.iml
+target/
+
+# visual paragigm backups
+diagrams/*.vpp.bak*
+diagrams/*.vpp.lck
+
 # Compiled class file
 *.class
 
