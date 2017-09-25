@@ -33,6 +33,10 @@ public final class ProbabilityBetStrategy implements BetStrategy {
         }
     }
 
+    public int probability() {
+        return probability;
+    }
+
     @Override
     public String name() {
         return "probability(" + probability + ")";
