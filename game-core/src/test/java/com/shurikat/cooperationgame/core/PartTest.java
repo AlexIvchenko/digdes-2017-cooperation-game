@@ -17,8 +17,8 @@ public class PartTest {
         Part part = new Part(first, second);
         part.execute();
 
-        assertEquals(3, first.money());
-        assertEquals(3, second.money());
+        assertEquals(2, first.money());
+        assertEquals(2, second.money());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -46,7 +46,7 @@ public class PartTest {
         Part part = new Part(first, second);
         part.execute();
 
-        assertEquals(0, first.money());
+        assertEquals(-1, first.money());
         assertEquals(4, second.money());
     }
 }

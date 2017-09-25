@@ -1,6 +1,6 @@
-package com.shurikat.cooperationgame.bots;
+package com.shurikat.cooperationgame.agents;
 
-import com.shurikat.cooperationgame.botapi.BetStrategy;
+import com.shurikat.cooperationgame.core.BetStrategy;
 import com.shurikat.cooperationgame.core.Bet;
 
 /**

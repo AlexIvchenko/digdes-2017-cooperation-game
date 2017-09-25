@@ -1,4 +1,4 @@
-package com.shurikat.cooperationgame.botapi;
+package com.shurikat.cooperationgame.core;
 
 import com.shurikat.cooperationgame.core.Bet;
 

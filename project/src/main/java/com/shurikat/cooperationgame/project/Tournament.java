@@ -1,13 +1,14 @@
 package com.shurikat.cooperationgame.project;
 
-import com.shurikat.cooperationgame.botapi.BotAgent;
-import com.shurikat.cooperationgame.bots.Bots;
-import com.shurikat.cooperationgame.bots.ProbabilityBetStrategy;
+import com.shurikat.cooperationgame.agents.Agents;
+import com.shurikat.cooperationgame.agents.ProbabilityBetStrategy;
 import com.shurikat.cooperationgame.core.Agent;
 import com.shurikat.cooperationgame.core.Game;
 import com.shurikat.cooperationgame.summary.GameSummary;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Random;
 
 /**
  * @author Alex Ivchenko
@@ -38,7 +39,7 @@ final class Tournament {
     Statistic run() {
         for (int i = 0; i < settings.experiments; ++i) {
             GameSummary summary = iterate();
-            BotAgent bot = (BotAgent) findBestAgent(summary);
+            Agent bot = findBestAgent(summary);
             ProbabilityBetStrategy strategy = (ProbabilityBetStrategy) bot.strategy();
             int probability = strategy.probability();
             probabilityToCountWins.merge(probability, 1, (c1, c2) -> c1 + c2);
@@ -49,7 +50,7 @@ final class Tournament {
     private GameSummary iterate() {
         Game.Builder builder = Game.builder();
         for (int i = 0; i < settings.countBots; ++i) {
-            Agent bot = Bots
+            Agent bot = Agents
                     .probability(random.nextInt(101))
                     .name("bot #" + i)
                     .money(settings.startMoney);

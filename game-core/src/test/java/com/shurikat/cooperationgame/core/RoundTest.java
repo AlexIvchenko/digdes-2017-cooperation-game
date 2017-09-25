@@ -42,7 +42,7 @@ public class RoundTest {
             agents.add(agent("" + i, money, Bet.ONE));
         }
         Round.builder().addAll(agents).build().execute();
-        assertTrue(agents.stream().allMatch(agent -> agent.money() == money + (n - 1) * 2));
+        assertTrue(agents.stream().allMatch(agent -> agent.money() == money + (n - 1) * 2 - 1 * (n - 1)));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class RoundTest {
                 .build()
                 .execute();
         assertEquals(7, z1.money());
-        assertEquals(2, o1.money());
-        assertEquals(2, o2.money());
+        assertEquals(0, o1.money());
+        assertEquals(0, o2.money());
     }
 }

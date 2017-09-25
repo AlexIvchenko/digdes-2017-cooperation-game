@@ -59,7 +59,7 @@ public class GameTest {
         assertFalse(result.hasWinner());
         assertFalse(result.winner().isPresent());
         assertEquals(2, result.remaining().count());
-        assertEquals(m1 + rounds * 2, o1.money());
-        assertEquals(m2 + rounds * 2, o2.money());
+        assertEquals(m1 + rounds * 2 - 1 * rounds, o1.money());
+        assertEquals(m2 + rounds * 2 - 1 * rounds, o2.money());
     }
 }
