@@ -3,6 +3,8 @@ package com.shurikat.cooperationgame.core;
 import com.shurikat.cooperationgame.summary.AgentSnapshot;
 import com.shurikat.cooperationgame.summary.PartResult;
 
+import java.util.Objects;
+
 /**
  * @author Alex Ivchenko
  */
@@ -14,6 +16,12 @@ final class Part {
     Part(Agent firstAgent, Agent secondAgent) {
         this.firstAgent = firstAgent;
         this.secondAgent = secondAgent;
+        checkAgents();
+    }
+
+    private void checkAgents() {
+        Objects.requireNonNull(firstAgent);
+        Objects.requireNonNull(secondAgent);
     }
 
     PartResult execute() {
@@ -67,9 +75,5 @@ final class Part {
                 .first(fSnapshot)
                 .second(sSnapshot)
                 .build();
-    }
-
-    boolean isExecuted() {
-        return executed;
     }
 }

@@ -36,10 +36,6 @@ final class Round {
         return summaryBuilder.build();
     }
 
-    boolean isExecuted() {
-        return executed;
-    }
-
     private PartResult makePair(int i, int j) {
         return new Part(agents.get(i), agents.get(j)).execute();
     }
@@ -55,7 +51,15 @@ final class Round {
             return this;
         }
 
+        public Builder addAll(Set<Agent> agents) {
+            agents.forEach(this::addAgent);
+            return this;
+        }
+
         public Round build() {
+            if (agents.size() < 2) {
+                throw new IllegalArgumentException("agents quantity in round must be al least 2");
+            }
             return new Round(agents);
         }
     }

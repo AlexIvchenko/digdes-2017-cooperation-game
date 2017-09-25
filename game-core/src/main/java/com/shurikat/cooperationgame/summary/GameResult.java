@@ -18,7 +18,7 @@ public final class GameResult {
     }
 
     public Optional<Agent> winner() {
-        if (isFinished()) {
+        if (hasWinner()) {
             return Optional.of(remaining.get(0));
         } else {
             return Optional.empty();
@@ -30,6 +30,10 @@ public final class GameResult {
     }
 
     public boolean isFinished() {
+        return remaining.size() <= 1;
+    }
+
+    public boolean hasWinner() {
         return remaining.size() == 1;
     }
 

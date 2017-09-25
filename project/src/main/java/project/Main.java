@@ -15,7 +15,7 @@ public class Main {
                 .addAgent(pessimistic().name("first").money(10))
                 .addAgent(naive().name("naive").money(10))
                 .build();
-        GameSummary result = game.execute(100);
+        GameSummary result = game.proceed(100);
         System.out.println(result.result().winner());
     }
 }
