@@ -8,3 +8,5 @@ cd digdes-2017-cooperation-game
 mvn clean install
 java -jar project/target/project-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
+# UML
+![](https://github.com/AlexIvchenko/digdes-2017-cooperation-game/blob/master/diagrams/cooperation-game.png)
