@@ -8,7 +8,9 @@ import com.shurikat.cooperationgame.summary.GameSummary;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Alex Ivchenko
@@ -39,10 +41,13 @@ final class Tournament {
     Statistic run() {
         for (int i = 0; i < settings.experiments; ++i) {
             GameSummary summary = iterate();
-            Agent bot = findBestAgent(summary);
-            ProbabilityBetStrategy strategy = (ProbabilityBetStrategy) bot.strategy();
-            int probability = strategy.probability();
-            probabilityToCountWins.merge(probability, 1, (c1, c2) -> c1 + c2);
+            Optional<Agent> best = findBestAgent(summary);
+            if (best.isPresent()) {
+                Agent bot = best.get();
+                ProbabilityBetStrategy strategy = (ProbabilityBetStrategy) bot.strategy();
+                int probability = strategy.probability();
+                probabilityToCountWins.merge(probability, 1, (c1, c2) -> c1 + c2);
+            }
         }
         return statistic();
     }
@@ -60,17 +65,19 @@ final class Tournament {
         return game.proceed(settings.maxRound);
     }
 
-    private Agent findBestAgent(GameSummary summary) {
+    private Optional<Agent> findBestAgent(GameSummary summary) {
         return summary.result().remaining()
                 .sorted(Comparator.comparingInt(Agent::money).reversed())
-                .findFirst().get();
+                .findFirst();
     }
 
     private Statistic statistic() {
         double[] prob = new double[101];
+        AtomicInteger experiments = new AtomicInteger(0);
+        probabilityToCountWins.values().forEach(experiments::addAndGet);
         probabilityToCountWins.entrySet().stream()
                 .sorted((e1, e2) -> e2.getValue() - e1.getValue())
-                .forEach(entry -> prob[entry.getKey()] = (double) entry.getValue() / settings.experiments);
+                .forEach(entry -> prob[entry.getKey()] = (double) entry.getValue() / experiments.get());
         return new Statistic(prob);
     }
 }
