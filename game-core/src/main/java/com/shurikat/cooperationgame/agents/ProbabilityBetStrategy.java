@@ -25,7 +25,7 @@ public final class ProbabilityBetStrategy implements BetStrategy {
 
     @Override
     public Bet bet() {
-        int r = random.nextInt(10); // 0..99
+        int r = random.nextInt(100); // 0..99
         if (probability > r) {
             return Bet.ONE;
         } else {

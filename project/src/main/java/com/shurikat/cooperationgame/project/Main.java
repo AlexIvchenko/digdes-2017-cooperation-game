@@ -7,7 +7,7 @@ import java.util.Locale;
  */
 public class Main {
     public static void main(final String... args) {
-        Tournament.Settings settings = new Tournament.Settings(1000, 100, 20, 10);
+        Tournament.Settings settings = new Tournament.Settings(1000, 100, 20, 1000);
         Statistic statistic = new Tournament(settings).run();
         print(statistic);
     }
