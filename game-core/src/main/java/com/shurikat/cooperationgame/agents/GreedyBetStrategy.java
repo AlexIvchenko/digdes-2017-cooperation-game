@@ -6,7 +6,7 @@ import com.shurikat.cooperationgame.core.Bet;
 /**
  * @author Alex Ivchenko
  */
-public final class PessimisticBetStrategy implements BetStrategy {
+public final class GreedyBetStrategy implements BetStrategy {
     @Override
     public Bet bet() {
         return Bet.ZERO;
@@ -14,6 +14,6 @@ public final class PessimisticBetStrategy implements BetStrategy {
 
     @Override
     public String name() {
-        return "pessimistic";
+        return "greedy";
     }
 }

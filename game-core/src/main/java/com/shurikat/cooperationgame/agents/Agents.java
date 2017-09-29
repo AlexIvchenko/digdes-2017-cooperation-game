@@ -16,9 +16,9 @@ public class Agents {
                 .strategy(new NaiveBetStrategy());
     }
 
-    public static Agent.NameStageBuilder pessimistic() {
+    public static Agent.NameStageBuilder greedy() {
         return Agent.builder()
-            .strategy(new PessimisticBetStrategy());
+            .strategy(new GreedyBetStrategy());
     }
 
     public static Agent.NameStageBuilder probability(int probability) {
