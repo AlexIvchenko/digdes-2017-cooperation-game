@@ -1,4 +1,8 @@
 # cooperation-game
+
+
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
 Test project to apply for educational Java-development course
 
 # Quick start
