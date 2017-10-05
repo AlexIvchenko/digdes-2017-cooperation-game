@@ -1,7 +1,7 @@
 # cooperation-game
 
 
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![license](https://img.shields.io/github/license/AlexIvchenko/digdes-2017-cooperation-game.svg)]()
 
 Test project to apply for educational Java-development course
 
